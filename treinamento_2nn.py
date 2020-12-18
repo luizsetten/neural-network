@@ -66,6 +66,48 @@ def g_linha(z, tp_ativacao='tanh'):
 # Enquanto (não convergir) ## Ou por um numero de épocas (no projeto atual vai ser 1000)
 
 
+def prediz(W1, b1, W2, b2, X, tp_ativacao):
+    '''
+    Prediz se uma instancia eh 0 ou 1, utilizando os parametros w e b treinados atraves de regressao logistica
+
+    Parametros:
+    w -- vetor de pesos de tamanho (n_x,1) 
+    b -- vies, um escalar
+    X -- conjunto de dados de dimensoes (n_x,m) -- instancias sao vistas como vetores-colunas
+
+    Retorno:
+    Y_predicao -- um vetor numpy contendo as predicoes (0 ou 1) para os exemplos em X, de tamanho (1,m)
+    '''
+    Z1 = np.dot(W1, X)+b1
+    A1 = g(Z1, tp_ativacao)  # Tanh() ou ReLU no lugar da sigmoide
+    #     z[1](i) = W[1]x(i) + b[1]; a[1](i) = g(z[1](i)) ## Foward propagation [g(z[1](i)) - pode ser tanto tanh(z) quanto ReLU(z)]
+
+    Z2 = np.dot(W2, A1)+b2
+    Y_hat = sigmoide(Z2)
+
+    m = X.shape[1]
+    Y_predicao = np.zeros((1, m))
+
+    # forca que w tenha a dimensao de um vetor coluna de X
+    # w = w.reshape(X.shape[0], 1)
+
+    # Calcula Y_hat, as probabilidades das instancias de X pertencerem a classe 1
+    # --> operacao vetorial, Y_hat tem dimensao (1,m)
+    # Y_hat = sigmoide(np.dot(w.T, X)+b)
+
+    for i in range(Y_hat.shape[1]):
+
+        # Converte probabilidades Y_hat para prediçoes
+        if (Y_hat[0, i] > 0.5):
+            Y_predicao[0, i] = 1
+        else:
+            Y_predicao[0, i] = 0
+
+    assert(Y_predicao.shape == (1, m))
+
+    return Y_predicao
+
+
 def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='ReLU'):
     w, b = inicializa_com_randoms(X.shape[0], nr_neuronios)
     W1 = w.T
@@ -171,6 +213,18 @@ def constroi_modelo_2nn(X_treino, Y_treino, X_teste, Y_teste, num_iteracoes, tax
     m = X_treino.shape[1]
     W2, b2, W1, b1, custos = treina2nn(X_treino, Y_treino, m, taxa_aprendizado,
                                        num_iteracoes, nr_neuronios, tp_ativacao)
+
+    # Prediz o rótulo de treinamento e de teste
+    Y_predicao_treino = prediz(W1, b1, W2, b2, X_treino, tp_ativacao)
+    Y_predicao_teste = prediz(W1, b1, W2, b2, X_teste, tp_ativacao)
+
+    # Exibe a taxa de acuracia do treino e do teste
+    # Taxa de acuracia = 100 - MAE*100
+    # Erro medio absoluto (MAE) ~~> MAE = 1/m * soma(|y_predito^(i) - y^(i)|)
+    print("Acuracia de treino: {} %".format(
+        100 - np.mean(np.abs(Y_predicao_treino - Y_treino)) * 100))
+    print("Acuracia de teste: {} %".format(
+        100 - np.mean(np.abs(Y_predicao_teste - Y_teste)) * 100))
 
     d = {"custos": custos,
          #  "Y_predicao_teste": Y_predicao_teste,
