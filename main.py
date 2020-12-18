@@ -66,13 +66,13 @@ def raioGraficalizador2(dados, intervalo, numeroIteracoes, taxaAprendizado):
 
 vetor1 = [1000]
 vetor2 = [0.01, 0.001]
-vetor3 = ['ReLU', 'tanh']
+vetor3 = ['tanh', 'ReLU']
 
-for i in vetor1:
-    for j in vetor2:
-        data = constroi_modelo(X_treino, Y_treino, X_teste,
-                               Y_teste, i, j, print_custo=False)
-        raioGraficalizador(data['custos'], 10, i, j)
+# for i in vetor1:
+#     for j in vetor2:
+#         data = constroi_modelo(X_treino, Y_treino, X_teste,
+#                                Y_teste, i, j, print_custo=False)
+#         raioGraficalizador(data['custos'], 10, i, j)
 
 for i in vetor1:
     for j in vetor2:

@@ -10,17 +10,6 @@ import scipy
 
 
 def inicializa_com_randoms(dim, nr_neuronios):  # nr_neuronios da camada atual
-    """
-    Cria uma matriz w de dimensoes [dim][1], ou seja, um vetor em coluna, e o inicializa com zero. Inicializa b = 0.
-
-    Parametros:
-    dim -- o tamanho do vetor de coluna w (igual a quantidade de caracteristicas de x^(i))
-
-    Retorno:
-    w -- vetor coluna inicializado com dimensoes (dim, 1)
-    b -- escalar inicializado com valor 0 (vies)
-    """
-
     # cria um vetor de determinada dimensao e seta suas posicoes valendo 0
     w = np.random.rand(dim, nr_neuronios)
     b = np.random.rand(nr_neuronios, 1)
@@ -135,11 +124,11 @@ def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='ReLU'):
         dB1 = dZ1
         #     db[1] += dz[1] ## Agrega todas as instancias (camada oculta)
 
-        J /= m
-        dW1 /= m
-        dB1 /= m
-        dW2 /= m
-        dB2 /= m  # Tirar as médias
+        J = np.sum(J) / m
+        dW1 = np.sum(dW1) / m
+        dB1 = np.sum(dB1) / m
+        dW2 = np.sum(dW2) / m
+        dB2 = np.sum(dB2) / m  # Tirar as médias
         #   J /= m; dW[1]/= m; db[1]/= m; dW[2]/= m; db[2]/= m ; ## Tirar as médias
 
         # Atualização de custos [W2 - Vetor original; dW2 - Matriz gradiente; alfa - Taxa de aprendizado]
@@ -157,7 +146,7 @@ def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='ReLU'):
     # custos = J
     # return parametros, custos
         if i % 10 == 0:
-            custos.append(np.sum(J[0])/m)
+            custos.append(np.sum(J)/m)
 
     return W2, b2, W1, b1, custos
 # Saída: W[1], W[2], b[1] e b[2] treinados
