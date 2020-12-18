@@ -90,6 +90,7 @@ def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='ReLU'):
     # J - função de custo
     # dW[1] e db[1] - gradientes da camada oculta
     # dW[2] e db[2] - gradientes da camada de saída
+    custos = []
     for i in range(num_iteracoes):
         J = 0
         dW1 = 0
@@ -103,7 +104,6 @@ def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='ReLU'):
         # termo2 = (1-Y)*np.log(1-Y_hat)
 
         # custo = - 1/m * np.sum(termo1 + termo2)
-        # Z1 = (termo1 + termo2)
 
         Z1 = np.dot(W1, X)+b1
         A1 = g(Z1, tp_ativacao)  # Tanh() ou ReLU no lugar da sigmoide
@@ -152,6 +152,9 @@ def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='ReLU'):
         #   b[2] ≔ b[2] − α db[2] ## Atualização de custos
         #   W[1] ≔ W[1] − α dW[1] ## Atualização de custos
         #   b[1] ≔ b[1] − α db[1] ## Atualização de custos
+
+        if i % 10 == 0:
+            custos.append(J)
 
     return W2, b2, W1, b1
 # Saída: W[1], W[2], b[1] e b[2] treinados
