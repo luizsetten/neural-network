@@ -178,7 +178,7 @@ def prediz(w, b, X):
 
 
 def constroi_modelo(X_treino, Y_treino, X_teste, Y_teste, num_iteracoes, taxa_aprendizado, print_custo=False):
-    m = 0
+    m = X_treino.shape[1]
     treina2nn(X_treino, Y_treino, m, taxa_aprendizado, num_iteracoes)
 
     """
