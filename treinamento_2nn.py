@@ -51,7 +51,7 @@ def sigmoide(z):
 # escrever tanh() e ReLU (colocar uma flag para selecionar)
 
 
-def g(z, tp_ativacao='tanh()'):
+def g(z, tp_ativacao='tanh'):
     if(tp_ativacao == 'ReLU'):
         # Escrever a ReLU aqui
         s = z if z > 0 else 0
@@ -62,7 +62,7 @@ def g(z, tp_ativacao='tanh()'):
     return s
 
 
-def g_linha(z, tp_ativacao='tanh()'):
+def g_linha(z, tp_ativacao='tanh'):
     if(tp_ativacao == 'ReLU'):
         #  Derivada da ReLU
         # Se z = 0 o retorno pode ser 0 ou 1, não importa (por isso não tratei o condicional)
@@ -75,7 +75,7 @@ def g_linha(z, tp_ativacao='tanh()'):
 # Enquanto (não convergir) ## Ou por um numero de épocas (no projeto atual vai ser 1000)
 
 
-def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='tanh()'):
+def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='tanh'):
     w, b = inicializa_com_randoms(X.shape[0], nr_neuronios)
     W1 = w.T
     b1 = b
@@ -87,8 +87,8 @@ def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='tanh()'
     # J - função de custo
     # dW[1] e db[1] - gradientes da camada oculta
     # dW[2] e db[2] - gradientes da camada de saída
+    J = 0
     for i in range(num_iteracoes):
-        J = 0
         dW1 = 0
         dW2 = 0
         # b1 = 0
@@ -150,5 +150,8 @@ def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='tanh()'
         #   W[1] ≔ W[1] − α dW[1] ## Atualização de custos
         #   b[1] ≔ b[1] − α db[1] ## Atualização de custos
 
-    return W2, b2, W1, b1
+    parametros = {"w": np.dot(W2, W1),
+                  "b": np.dot(b1, b2.T)}
+    custos = J
+    return parametros, custos
 # Saída: W[1], W[2], b[1] e b[2] treinados
