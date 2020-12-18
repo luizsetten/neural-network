@@ -51,7 +51,7 @@ def sigmoide(z):
 # escrever tanh() e ReLU (colocar uma flag para selecionar)
 
 
-def g(z, tp_ativacao='tanh()'):
+def g(z, tp_ativacao='tanh'):
     if(tp_ativacao == 'ReLU'):
         # Escrever a ReLU aqui
         s = np.greater(z, 0)
@@ -63,7 +63,7 @@ def g(z, tp_ativacao='tanh()'):
     return s
 
 
-def g_linha(z, tp_ativacao='tanh()'):
+def g_linha(z, tp_ativacao='tanh'):
     print('o que é isso', z)
     if(tp_ativacao == 'ReLU'):
         #  Derivada da ReLU
