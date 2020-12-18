@@ -54,7 +54,8 @@ def sigmoide(z):
 def g(z, tp_ativacao='tanh'):
     if(tp_ativacao == 'ReLU'):
         # Escrever a ReLU aqui
-        s = z if z > 0 else 0
+        s = np.greater(z, 0)
+        s = s.astype(int)
         return s
 
     # Tangente Hiperbolica
@@ -66,7 +67,8 @@ def g_linha(z, tp_ativacao='tanh'):
     if(tp_ativacao == 'ReLU'):
         #  Derivada da ReLU
         # Se z = 0 o retorno pode ser 0 ou 1, não importa (por isso não tratei o condicional)
-        s = 1 if z < 0 else 1
+        s = np.greater(0, z)
+        s = s.astype(int)
         return s
 
     # Derivada da tangente hiperbolica
@@ -75,20 +77,28 @@ def g_linha(z, tp_ativacao='tanh'):
 # Enquanto (não convergir) ## Ou por um numero de épocas (no projeto atual vai ser 1000)
 
 
+<< << << < HEAD
 def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='tanh'):
-    w, b = inicializa_com_randoms(X.shape[0], nr_neuronios)
-    W1 = w.T
-    b1 = b
 
-    w, b = inicializa_com_randoms(nr_neuronios, 1)
-    W2 = w.T
-    b2 = b
 
-    # J - função de custo
-    # dW[1] e db[1] - gradientes da camada oculta
-    # dW[2] e db[2] - gradientes da camada de saída
-    J = 0
-    for i in range(num_iteracoes):
+== == == =
+def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='ReLU'):
+
+
+>>>>>> > master
+w, b = inicializa_com_randoms(X.shape[0], nr_neuronios)
+W1 = w.T
+b1 = b
+
+w, b = inicializa_com_randoms(nr_neuronios, 1)
+W2 = w.T
+ b2 = b
+
+  # J - função de custo
+  # dW[1] e db[1] - gradientes da camada oculta
+  # dW[2] e db[2] - gradientes da camada de saída
+  J = 0
+   for i in range(num_iteracoes):
         dW1 = 0
         dW2 = 0
         # b1 = 0
