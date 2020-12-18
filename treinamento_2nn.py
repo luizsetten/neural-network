@@ -157,7 +157,39 @@ def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='ReLU'):
     # custos = J
     # return parametros, custos
         if i % 10 == 0:
-            custos.append(J)
+            custos.append(np.sum(J[0])/m)
 
-    return W2, b2, W1, b1
+    return W2, b2, W1, b1, custos
 # Saída: W[1], W[2], b[1] e b[2] treinados
+
+
+def constroi_modelo_2nn(X_treino, Y_treino, X_teste, Y_teste, num_iteracoes, taxa_aprendizado, nr_neuronios, tp_ativacao, print_custo=False):
+    """
+    Constroi o modelo de regressao logistica com base nas funcoes anteriores
+
+    Parametros:
+    X_treino -- conjunto de treinamento de dimensao (n_x, m_treino) que contem as instancias para treinamento
+    Y_treino -- rotulos de treinamento de dimensao (1, m_treino)
+    X_teste -- conjunto de teste de dimensao (n_x, m_teste) que contem as instancias para teste
+    Y_teste -- rotulos de teste de dimensao (1, m_teste)
+    num_iteracoes -- numero de interacoes (epocas) para aprendizado do modelo
+    taxa_aprendizado -- taxa de aprendizado a ser utilizada
+    print_custo -- se verdade, imprimir custo a cada 10 epocas
+
+    Retorno:
+    d -- dicionario contendo informacoes sobre o modelo
+    """
+    m = X_treino.shape[1]
+    W2, b2, W1, b1, custos = treina2nn(X_treino, Y_treino, m, taxa_aprendizado,
+                                       num_iteracoes, nr_neuronios, tp_ativacao)
+
+    d = {"custos": custos,
+         #  "Y_predicao_teste": Y_predicao_teste,
+         #  "Y_predicao_treino": Y_predicao_treino,
+         "W1": W1,
+         "b1": b1,
+         "W2": W2,
+         "b2": b2,
+         "taxa_aprendizado": taxa_aprendizado,
+         "num_iteracoes": num_iteracoes}
+    return d

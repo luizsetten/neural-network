@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.core.fromnumeric import shape
 import scipy
-from treinamento_2nn import treina2nn
+# from treinamento_2nn import treina2nn
 
 # Regressao Logistica implementada com vetorizacao do Numpy. Ao inves de usar loops para iterar em vetores e matrizes,
 # as operacoes sao feitas em nivel delas. Para perfeito entendimento do codigo, recomenda-se revisao de operacoes de
@@ -200,57 +200,6 @@ def constroi_modelo(X_treino, Y_treino, X_teste, Y_teste, num_iteracoes, taxa_ap
     # treina o modelo, aprendendo e otimizando os parametros w e b
     parametros, gradientes, custos = treina(
         w, b, X_treino, Y_treino, num_iteracoes, taxa_aprendizado, print_custo)
-
-    # Recupera do dicionario de parametros
-    w = parametros["w"]
-    b = parametros["b"]
-
-    # Prediz o rótulo de treinamento e de teste
-    Y_predicao_treino = prediz(w, b, X_treino)
-    Y_predicao_teste = prediz(w, b, X_teste)
-
-    # Exibe a taxa de acuracia do treino e do teste
-    # Taxa de acuracia = 100 - MAE*100
-    # Erro medio absoluto (MAE) ~~> MAE = 1/m * soma(|y_predito^(i) - y^(i)|)
-    print("Acuracia de treino: {} %".format(
-        100 - np.mean(np.abs(Y_predicao_treino - Y_treino)) * 100))
-    print("Acuracia de teste: {} %".format(
-        100 - np.mean(np.abs(Y_predicao_teste - Y_teste)) * 100))
-
-    d = {"custos": custos,
-         "Y_predicao_teste": Y_predicao_teste,
-         "Y_predicao_treino": Y_predicao_treino,
-         "w": w,
-         "b": b,
-         "taxa_aprendizado": taxa_aprendizado,
-         "num_iteracoes": num_iteracoes}
-
-    return d
-
-
-def constroi_modelo_2nn(X_treino, Y_treino, X_teste, Y_teste, num_iteracoes, taxa_aprendizado, nr_neuronios, tp_ativacao, print_custo=False):
-    """
-    Constroi o modelo de regressao logistica com base nas funcoes anteriores
-
-    Parametros:
-    X_treino -- conjunto de treinamento de dimensao (n_x, m_treino) que contem as instancias para treinamento
-    Y_treino -- rotulos de treinamento de dimensao (1, m_treino)
-    X_teste -- conjunto de teste de dimensao (n_x, m_teste) que contem as instancias para teste
-    Y_teste -- rotulos de teste de dimensao (1, m_teste)
-    num_iteracoes -- numero de interacoes (epocas) para aprendizado do modelo
-    taxa_aprendizado -- taxa de aprendizado a ser utilizada
-    print_custo -- se verdade, imprimir custo a cada 10 epocas
-
-    Retorno:
-    d -- dicionario contendo informacoes sobre o modelo
-    """
-    m = X_treino.shape[1]
-    parametros, custos = treina2nn(X_treino, Y_treino, m, taxa_aprendizado,
-                                   num_iteracoes, nr_neuronios, tp_ativacao)
-
-    # # treina o modelo, aprendendo e otimizando os parametros w e b
-    # treina(
-    #     w, b, X_treino, Y_treino, num_iteracoes, taxa_aprendizado, print_custo)
 
     # Recupera do dicionario de parametros
     w = parametros["w"]
