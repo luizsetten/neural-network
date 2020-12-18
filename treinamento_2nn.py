@@ -54,7 +54,8 @@ def sigmoide(z):
 def g(z, tp_ativacao='tanh()'):
     if(tp_ativacao == 'ReLU'):
         # Escrever a ReLU aqui
-        s = z if z > 0 else 0
+        s = np.greater(z, 0)
+        s = s.astype(int)
         return s
 
     # Tangente Hiperbolica
@@ -63,10 +64,12 @@ def g(z, tp_ativacao='tanh()'):
 
 
 def g_linha(z, tp_ativacao='tanh()'):
+    print('o que é isso', z)
     if(tp_ativacao == 'ReLU'):
         #  Derivada da ReLU
         # Se z = 0 o retorno pode ser 0 ou 1, não importa (por isso não tratei o condicional)
-        s = 1 if z < 0 else 1
+        s = np.greater(0, z)
+        s = s.astype(int)
         return s
 
     # Derivada da tangente hiperbolica
@@ -75,7 +78,7 @@ def g_linha(z, tp_ativacao='tanh()'):
 # Enquanto (não convergir) ## Ou por um numero de épocas (no projeto atual vai ser 1000)
 
 
-def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='tanh()'):
+def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='ReLU'):
     w, b = inicializa_com_randoms(X.shape[0], nr_neuronios)
     W1 = w.T
     b1 = b
