@@ -77,28 +77,21 @@ def g_linha(z, tp_ativacao='tanh'):
 # Enquanto (não convergir) ## Ou por um numero de épocas (no projeto atual vai ser 1000)
 
 
-<< << << < HEAD
-def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='tanh'):
-
-
-== == == =
 def treina2nn(X, Y, m, alfa, num_iteracoes, nr_neuronios=3, tp_ativacao='ReLU'):
+    w, b = inicializa_com_randoms(X.shape[0], nr_neuronios)
+    W1 = w.T
+    b1 = b
 
+    w, b = inicializa_com_randoms(nr_neuronios, 1)
+    W2 = w.T
+    b2 = b
 
->>>>>> > master
-w, b = inicializa_com_randoms(X.shape[0], nr_neuronios)
-W1 = w.T
-b1 = b
-
-w, b = inicializa_com_randoms(nr_neuronios, 1)
-W2 = w.T
- b2 = b
-
-  # J - função de custo
-  # dW[1] e db[1] - gradientes da camada oculta
-  # dW[2] e db[2] - gradientes da camada de saída
-  J = 0
-   for i in range(num_iteracoes):
+    # J - função de custo
+    # dW[1] e db[1] - gradientes da camada oculta
+    # dW[2] e db[2] - gradientes da camada de saída
+    custos = []
+    for i in range(num_iteracoes):
+        J = 0
         dW1 = 0
         dW2 = 0
         # b1 = 0
@@ -110,7 +103,6 @@ W2 = w.T
         # termo2 = (1-Y)*np.log(1-Y_hat)
 
         # custo = - 1/m * np.sum(termo1 + termo2)
-        # Z1 = (termo1 + termo2)
 
         Z1 = np.dot(W1, X)+b1
         A1 = g(Z1, tp_ativacao)  # Tanh() ou ReLU no lugar da sigmoide
@@ -160,8 +152,12 @@ W2 = w.T
         #   W[1] ≔ W[1] − α dW[1] ## Atualização de custos
         #   b[1] ≔ b[1] − α db[1] ## Atualização de custos
 
-    parametros = {"w": np.dot(W2, W1),
-                  "b": np.dot(b1, b2.T)}
-    custos = J
-    return parametros, custos
+    # parametros = {"w": np.dot(W2, W1),
+    #               "b": np.dot(b1, b2.T)}
+    # custos = J
+    # return parametros, custos
+        if i % 10 == 0:
+            custos.append(J)
+
+    return W2, b2, W1, b1
 # Saída: W[1], W[2], b[1] e b[2] treinados
